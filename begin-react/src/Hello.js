@@ -1,3 +1,19 @@
 import React from 'react';
 
-function Hello() {}
+function Hello({ color, name, isSpecial }) {
+  // console.log('props >>', props, props.name, props.color);
+  console.log('props >>', color, name);
+  return (
+    <div style={{ color }}>
+      {/* {isSpecial ? <b>*</b> : null} */}
+      {isSpecial && <b>*</b>}
+      안녕하세요, {name}
+    </div>
+  );
+}
+
+Hello.defaultProps = {
+  name: '이름 없음.',
+};
+
+export default Hello;
