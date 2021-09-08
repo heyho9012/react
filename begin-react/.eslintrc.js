@@ -6,7 +6,7 @@ module.exports = {
   },
   extends: [
     'react-app',
-    'plugin:@typescript-eslint/recommended',
+    // 'plugin:@typescript-eslint/recommended',
     // typescript 표준 규칙 모음
     'plugin:import/errors',
     'plugin:import/warnings',
