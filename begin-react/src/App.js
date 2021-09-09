@@ -1,10 +1,16 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import Counter from './Counter';
 import Hello from './Hello';
 import Wrapper from './Wrapper';
 import InputSample from './InputSample';
 import UserList from './UserList';
 import CreateUser from './CreateUser';
+
+function countActiveUsers(users) {
+  const countUser = users.filter(user => user.active).length;
+  console.log('count active users...');
+  return countUser;
+}
 
 function App() {
   const [index, setIndex] = useState(0);
@@ -21,13 +27,17 @@ function App() {
   });
   const { username, email } = inputs;
 
-  const onChange = e => {
-    const { name, value } = e.target;
-    setInputs({
-      ...inputs,
-      [name]: value,
-    });
-  };
+  // useCallback() => inputs가 바뀔떄만 함수가 새로 만들어지고 아니면 재사용
+  const onChange = useCallback(
+    e => {
+      const { name, value } = e.target;
+      setInputs({
+        ...inputs,
+        [name]: value,
+      });
+    },
+    [inputs],
+  );
 
   const [users, setUsers] = useState([
     {
@@ -52,35 +62,42 @@ function App() {
 
   const nextId = useRef(4);
 
-  const onCreate = () => {
+  const onCreate = useCallback(() => {
     const user = {
       id: nextId.current,
       username,
       email,
       active: false,
     };
-    setUsers([...users, user]);
-    // setUsers(users.concat(user));
-    setInputs({
-      username: '',
-      email: '',
-      active: false,
-    });
-    console.log(nextId.current); // 4
-    nextId.current++;
-  };
+    if (username === '' || email === '') {
+      alert('빈 값을 입력해주세요.');
+    } else {
+      setUsers(users => [...users, user]);
+      // setUsers(users.concat(user));
+      setInputs({
+        username: '',
+        email: '',
+        active: false,
+      });
+      console.log(nextId.current); // 4
+      nextId.current++;
+    }
+    // }, [username, email, users]);
+  }, [username, email]);
 
-  const onRemove = id => {
-    setUsers(users.filter(user => user.id !== id));
-  };
+  const onRemove = useCallback(id => {
+    setUsers(users => users.filter(user => user.id !== id));
+  }, []);
 
-  const onToggle = id => {
-    setUsers(
+  const onToggle = useCallback(id => {
+    setUsers(users =>
       users.map(user =>
         user.id === id ? { ...user, active: !user.active } : user,
       ),
     );
-  };
+  }, []);
+
+  const count = useMemo(() => countActiveUsers(users), [users]);
 
   return (
     <>
@@ -108,6 +125,7 @@ function App() {
             onCreate={onCreate}
           />
           <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+          <p>count user: {count}</p>
         </>
       ) : null}
     </>
