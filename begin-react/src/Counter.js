@@ -1,4 +1,50 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, Component } from 'react';
+
+// CLASS COMPONENT
+// class Counter extends Component {
+//   // constructor(porps) {
+//   //   super(props);
+//   //   // this.handleIncrease = this.handleIncrease.bind(this);
+//   //   // this.handleDecrease = this.handleDecrease.bind(this);
+//   //   this.state = {
+//   //     counter: 0
+//   //   };
+//   // }
+
+//   state = {
+//     counter: 0,
+//     fixed: 1,
+//   };
+
+//   handleIncrease = () => {
+//     this.setState({
+//       counter: this.state.counter + 1,
+//     });
+//     // this.setState(state => ({
+//     //   counter: state.counter + 1,
+//     // }));
+//   };
+//   handleDecrease = () => {
+//     this.setState({
+//       counter: this.state.counter - 1,
+//     });
+//   };
+//   render() {
+//     const { counter } = this.state;
+//     return (
+//       <div>
+//         <h2>{counter}</h2>
+//         <button type="button" onClick={this.handleIncrease}>
+//           +1
+//         </button>
+//         <button type="button" onClick={this.handleDecrease}>
+//           -1
+//         </button>
+//         <p>고정된 값: {this.state.fixed}</p>
+//       </div>
+//     );
+//   }
+// }
 
 function reducer(state, action) {
   switch (action.type) {
